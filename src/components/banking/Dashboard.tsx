@@ -61,7 +61,6 @@ export default function Dashboard() {
     useState("bg-white");
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [walletsAnimating, setWalletsAnimating] = useState(false);
-  const [tickerAnimation, setTickerAnimation] = useState(false);
 
   // حفظ الألوان والأنماط الأصلية
   const originalStylesRef = useRef(null);
@@ -607,9 +606,9 @@ export default function Dashboard() {
               onClick={() => {
                 setShowWalletsSection(!showWalletsSection);
                 if (!showWalletsSection) {
-                  setTickerAnimation(true);
+                  setWalletsAnimating(true);
                   // Reset animation state after 5 seconds
-                  setTimeout(() => setTickerAnimation(false), 15000);
+                  setTimeout(() => setWalletsAnimating(false), 5000);
                 }
               }}
               className="w-full text-center bg-white/10 hover:bg-white/20 py-2 rounded-lg transition-all mb-3"
@@ -629,23 +628,15 @@ export default function Dashboard() {
                   WebkitScrollbar: { display: "none" },
                 }}
               >
-                <div
-                  className={`flex gap-2 justify-start w-full ${tickerAnimation ? "whitespace-nowrap" : ""}`}
-                  style={{ overflow: "hidden" }}
-                >
+                <div className="flex gap-2 justify-start w-full">
                   {electronicWallets.map((wallet, index) => (
                     <div
                       key={index}
-                      className={`bg-white/10 rounded-lg shadow-md border border-white/10 hover:border-white/30 transition-all text-center min-w-[120px] cursor-pointer overflow-hidden inline-block mx-2 ${walletsAnimating ? "animate-wallet" : ""} ${tickerAnimation ? "animate-news-ticker" : ""}`}
+                      className={`bg-white/10 rounded-lg shadow-md border border-white/10 hover:border-white/30 transition-all text-center min-w-[120px] cursor-pointer overflow-hidden ${walletsAnimating ? "animate-wallet" : ""}`}
                       style={{
                         animation: walletsAnimating
                           ? `walletMove ${1 + index * 0.2}s ease-in-out infinite alternate`
-                          : tickerAnimation
-                            ? `newsTicker ${15 + index * 2}s linear infinite`
-                            : "none",
-                        animationDelay: tickerAnimation
-                          ? `${index * 0.5}s`
-                          : "0s",
+                          : "none",
                       }}
                     >
                       <img
